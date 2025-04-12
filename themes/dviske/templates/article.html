@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}{{ article.title }}{% endblock %}
+{% block head %}
+{{ super() }}
+
+{% if article.description %}
+<meta name="description" content="{{article.description}}" />
+{% endif %}
+
+{% for tag in article.tags %}
+<meta name="tags" content="{{tag}}" />
+{% endfor %}
+{% endblock %}
+
+{% block content %}
+<section id="content">
+    <article>
+        <header>
+            <div class="card">
+                <div class="card-header">
+                    <h1>{{ article.title }}</h1>
+                    <h6 class="card-subtitle mb-2 text-muted">Posted: {{ article.date }}{% if article.category %},
+                        Category: <a href="/{{ article.category.url }}">{{ article.category }}</a>{% endif %}</h6>
+                </div>
+                <div class="card-body">
+                    {% if article.toc %}
+                    <div class="col-lg-3 hidden-xs hidden-sm">
+                        {{article.toc}}
+                    </div>
+                    <hr />
+                    {% endif %}
+                    {{ article.content}}
+                </div>
+                {% if article.tags %}
+                <div class="card-footer">
+                    <p class="card-subtitle mb-2 text-muted">Tags: {% for tag in article.tags %}<a href="{{ SITEURL }}/{{ tag.url }}">{{ tag }}</a>, {% endfor %}
+                    </p>
+                </div>
+                {% endif %}
+
+            </div>
+        </header>
+    </article>
+</section>
+{% endblock %}

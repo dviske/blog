@@ -1,0 +1,247 @@
+<!DOCTYPE html data-bs-theme="auto">
+<html lang="en">
+
+<head>
+    {% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="{{ AUTHOR }}">
+    <meta name="generator" content="Pelican" />
+    <meta name="description" content="">
+    <title>{% block title %}{{ SITENAME }}{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Feeds -->
+    {% if FEED_ALL_ATOM %}
+    <link href="{{ FEED_DOMAIN }}/{% if FEED_ALL_ATOM_URL %}{{ FEED_ALL_ATOM_URL }}{% else %}{{ FEED_ALL_ATOM }}{% endif %}" type="application/atom+xml" rel="alternate" title="{{ SITENAME|striptags }} Full Atom Feed" />
+    {% endif %}
+    {% if FEED_ALL_RSS %}
+        <link href="{{ FEED_DOMAIN }}/{% if FEED_ALL_RSS_URL %}{{ FEED_ALL_RSS_URL }}{% else %}{{ FEED_ALL_RSS }}{% endif %}" type="application/rss+xml" rel="alternate" title="{{ SITENAME|striptags }} Full RSS Feed" />
+    {% endif %}
+    {% if FEED_ATOM %}
+        <link href="{{ FEED_DOMAIN }}/{%if FEED_ATOM_URL %}{{ FEED_ATOM_URL }}{% else %}{{ FEED_ATOM }}{% endif %}" type="application/atom+xml" rel="alternate" title="{{ SITENAME|striptags }} Atom Feed" />
+    {% endif %}
+    {% if FEED_RSS %}
+        <link href="{{ FEED_DOMAIN }}/{% if FEED_RSS_URL %}{{ FEED_RSS_URL }}{% else %}{{ FEED_RSS }}{% endif %}" type="application/rss+xml" rel="alternate" title="{{ SITENAME|striptags }} RSS Feed" />
+    {% endif %}
+    {% if CATEGORY_FEED_ATOM and category %}
+        <link href="{{ FEED_DOMAIN }}/{% if CATEGORY_FEED_ATOM_URL %}{{ CATEGORY_FEED_ATOM_URL.format(slug=category.slug) }}{% else %}{{ CATEGORY_FEED_ATOM.format(slug=category.slug) }}{% endif %}" type="application/atom+xml" rel="alternate" title="{{ SITENAME|striptags }} Categories Atom Feed" />
+    {% endif %}
+    {% if CATEGORY_FEED_RSS and category %}
+        <link href="{{ FEED_DOMAIN }}/{% if CATEGORY_FEED_RSS_URL %}{{ CATEGORY_FEED_RSS_URL.format(slug=category.slug) }}{% else %}{{ CATEGORY_FEED_RSS.format(slug=category.slug) }}{% endif %}" type="application/rss+xml" rel="alternate" title="{{ SITENAME|striptags }} Categories RSS Feed" />
+    {% endif %}
+    {% if TAG_FEED_ATOM and tag %}
+        <link href="{{ FEED_DOMAIN }}/{% if TAG_FEED_ATOM_URL %}{{ TAG_FEED_ATOM_URL.format(slug=tag.slug) }}{% else %}{{ TAG_FEED_ATOM.format(slug=tag.slug) }}{% endif %}" type="application/atom+xml" rel="alternate" title="{{ SITENAME|striptags }} Tags Atom Feed" />
+    {% endif %}
+    {% if TAG_FEED_RSS and tag %}
+        <link href="{{ FEED_DOMAIN }}/{% if TAG_FEED_RSS_URL %}{{ TAG_FEED_RSS_URL.format(slug=tag.slug) }}{% else %}{{ TAG_FEED_RSS.format(slug=tag.slug) }}{% endif %}" type="application/rss+xml" rel="alternate" title="{{ SITENAME|striptags }} Tags RSS Feed" />
+    {% endif %}
+
+    {% endblock %}
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ SITEURL }}">{{ SITENAME }}</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ SITEURL }}/">Home</a>
+                    </li>
+                    {% if DISPLAY_CATEGORIES_ON_MENU %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Categories
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% for cat, null in categories %}
+                            <li class="nav-item {% if cat == category %}active{% endif %}">
+                                <a class="dropdown-item text-decoration-none" href="{{ SITEURL }}/{{ cat.url }}">
+                                    {% if cat == category %}
+                                    <i class="bi bi-folder2-open"></i> {{ cat }}
+                                    {% else %}
+                                    <i class="bi bi-folder2"></i> {{ cat }}
+                                    {% endif %}
+                                </a>
+                            </li>
+                            {% endfor %}
+
+                        </ul>
+                    </li>
+                    {% endif %}
+                </ul>
+                <button class="btn btn-link nav-link px-0 px-lg-2 py-2 dropdown-toggle d-flex align-items-center"
+                    id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static"
+                    aria-label="Toggle theme (dark)">
+                    <i class="bi bi-moon-stars-fill"></i>
+                    <span class="d-lg-none ms-2" id="bd-theme-text">Toggle theme</span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="bd-theme-text">
+                    <li>
+                        <button type="button" class="dropdown-item d-flex align-items-center"
+                            data-bs-theme-value="light" aria-pressed="false">
+                            <i class="bi bi-sun-fill me-2 opacity-50 theme-icon" aria-hidden="true"></i>
+                            Light
+                            <i class="bi bi-check2 ms-auto d-none theme-icon-check" aria-hidden="true"></i>
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" class="dropdown-item d-flex align-items-center active"
+                            data-bs-theme-value="dark" aria-pressed="true">
+                            <i class="bi bi-moon-stars-fill me-2 opacity-50 theme-icon" aria-hidden="true"></i>
+                            Dark
+                            <i class="bi bi-check2 ms-auto d-none theme-icon-check" aria-hidden="true"></i>
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="auto"
+                            aria-pressed="false">
+                            <i class="bi bi-circle-half me-2 opacity-50 theme-icon" aria-hidden="true"></i>
+                            Auto
+                            <i class="bi bi-check2 ms-auto d-none theme-icon-check" aria-hidden="true"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <main>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">About Me</h5>
+                            <p class="card-text">Hi, I'm Oliver! I'm an Enterprise Support Engineer at GitHub! Prior to GitHub I spent 7 years in the hosting industry, namely at Rackspace.</p>
+                            <p class="card-text">On my own time, I tinker with various things. I've got a homelab where I learn how to use new tools of the IT trades. Aside from this, I'm a hobbyist electrical engineer!</p>
+                            <p class="card-text">This blog is partially a dumping ground for my notes and thoughts, but I hope you'll find something useful!</p>
+                            {% if SOCIAL %}
+                            <hr />
+                            <h5 class="card-title">Socials</h5>
+                            <ul class="list-group list-group-flush">
+                                {% for item in SOCIAL %}
+                                <li class="list-group-item">
+                                <a target="_blank" class="text-decoration-none" href="{{ item[1] }}"><i
+                                        class='bi-{{ item[0] }}'></i> {{ item[0] }}</a></li>
+                                {% endfor %}
+                            {% endif %}
+                            </ul>
+                            {% if FEED_RSS %}
+                            <hr />
+                            <li class="nav-item">
+                                <a class="text-decoration-none nav-link" href="{{ SITEURL }}/{{ FEED_RSS }}">RSS</a>
+                            </li>
+                    {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-9">
+                    {% block content %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Stuff that isn't content -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+        crossorigin="anonymous"></script>
+    <script>
+        (() => {
+            'use strict'
+
+            const getStoredTheme = () => localStorage.getItem('theme')
+            const setStoredTheme = theme => localStorage.setItem('theme', theme)
+
+            const getPreferredTheme = () => {
+                const storedTheme = getStoredTheme()
+                if (storedTheme) {
+                    return storedTheme
+                }
+
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+            }
+
+            const setTheme = theme => {
+                if (theme === 'auto') {
+                    document.documentElement.setAttribute('data-bs-theme', (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'))
+                } else {
+                    document.documentElement.setAttribute('data-bs-theme', theme)
+                }
+            }
+
+            setTheme(getPreferredTheme())
+
+            const showActiveTheme = (theme, focus = false) => {
+                const themeSwitcher = document.querySelector('#bd-theme')
+
+                if (!themeSwitcher) {
+                    return
+                }
+
+                const themeSwitcherText = document.querySelector('#bd-theme-text')
+                const btnToActive = document.querySelector(`[data-bs-theme-value="${theme}"]`)
+
+                // Show check marks on active theme option
+                document.querySelectorAll('.theme-icon-check').forEach(element => {
+                    element.classList.add('d-none')
+                })
+                btnToActive.querySelector('.theme-icon-check').classList.remove('d-none')
+
+                document.querySelectorAll('[data-bs-theme-value]').forEach(element => {
+                    element.classList.remove('active')
+                    element.setAttribute('aria-pressed', 'false')
+                })
+
+                btnToActive.classList.add('active')
+                btnToActive.setAttribute('aria-pressed', 'true')
+
+                // Update the theme switcher icon to match the active theme
+                const activeThemeIcon = btnToActive.querySelector('.theme-icon').cloneNode(true)
+                activeThemeIcon.classList.remove('opacity-50', 'me-2')
+
+                // Replace the current theme icon with the new one
+                themeSwitcher.querySelector('i').replaceWith(activeThemeIcon)
+
+                const themeSwitcherLabel = `${themeSwitcherText.textContent} (${btnToActive.dataset.bsThemeValue})`
+                themeSwitcher.setAttribute('aria-label', themeSwitcherLabel)
+
+                if (focus) {
+                    themeSwitcher.focus()
+                }
+            }
+
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+                const storedTheme = getStoredTheme()
+                if (storedTheme !== 'light' && storedTheme !== 'dark') {
+                    setTheme(getPreferredTheme())
+                }
+            })
+
+            window.addEventListener('DOMContentLoaded', () => {
+                showActiveTheme(getPreferredTheme())
+
+                document.querySelectorAll('[data-bs-theme-value]')
+                    .forEach(toggle => {
+                        toggle.addEventListener('click', () => {
+                            const theme = toggle.getAttribute('data-bs-theme-value')
+                            setStoredTheme(theme)
+                            setTheme(theme)
+                            showActiveTheme(theme, true)
+                        })
+                    })
+            })
+        })()
+    </script>
+</body>
+
+</html>

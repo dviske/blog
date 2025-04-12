@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}{{ SITENAME }}{% endblock %}
+
+{% block content %}
+
+<section class="container overflow-hidden">
+    <div class="row gy-3">
+
+        {% for article in articles %}
+        <div class="card">
+            <div class="card-header">
+                <a href="/{{ article.url }}">
+                    <h5 class="card-title">{{ article.title }}</h5>
+                </a>
+                <h6 class="card-subtitle mb-2 text-muted">Posted: {{ article.date }}{% if article.category %}, Category:
+                    <a href="/{{ article.category.url }}">{{ article.category }}</a>{% endif %}</h6>
+            </div>
+            <div class="card-body">
+                <p class="card-text">{{ article.summary }}</p>
+            </div>
+            {% if article.tags %}
+            <div class="card-footer">
+                <p class="card-subtitle mb-2 text-muted">Tags: {% for tag in article.tags %}<a href="{{ SITEURL }}/{{ tag.url }}">{{ tag }}</a>, {% endfor %}</p>
+            </div>
+            {% endif %}
+
+        </div>
+
+        {% else %}
+        No posts yet!
+        {% endfor %}
+
+    </div>
+</section>
+
+
+{% endblock %}
